@@ -1,6 +1,8 @@
 import { Text } from "@rneui/base";
 import {  StyleSheet, View } from "react-native";
 import dateFormat from "dateformat";
+import React from "react";
+import MessageText from "./MeaageText";
 
 export type T_formatsDateMask =
   | "ktt hh:MM"
@@ -35,9 +37,11 @@ function Message(props:any) {
         <View style={[styles[positon].container]}>
         <View  style={{flexShrink: 1}}>
             <View style={{justifyContent:"flex-end"}} >
-                <Text >dfdsfsd</Text>
+                <Text >{item.displayName
+                
+                }</Text>
                 <View style={{borderRadius:15,padding:5,backgroundColor:"#ffffff", }}>
-                    <Text style={{fontSize:14}}>{item.text}</Text> 
+                <MessageText message={item.text} > </MessageText>
                 </View>
             </View>
         </View>

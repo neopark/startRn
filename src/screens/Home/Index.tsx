@@ -21,9 +21,15 @@ function Index(){
         setAppState(initialAppState);
         nav.navigate("signin");
     }
+    
+    const addMessage1 = (message:T_message) =>{
+        console.log("send");
+        setData(data.concat(message));
+    }
 
     const [data,setData] = useState<T_message[]>([{text:"aaa"},{text:"bbb"}]);
 
+    const backColor="#FEDC26"
    
     return(
     <View style={{flex:1}}>
@@ -42,10 +48,12 @@ function Index(){
     </View>
     <MyText style={{flex:0.1,borderWidth:1,backgroundColor:"#0000ff",alignContent:"flex-end"}}>home</MyText>
     <View style={{flex:1,borderWidth:1,alignItems:"flex-end"}}>
-        <View style={{flex:1,flexDirection:"row",backgroundColor:"#00ff00",alignItems:"flex-end"}}>
+        <View style={{flex:1,flexDirection:"row",backgroundColor:backColor,alignItems:"flex-end"}}>
             <NeonChat data={data} 
                 ref={chat}
                 owner={"dd"}
+                backColor={backColor}
+                addMessage = {addMessage1}
             />
         </View>
     </View>

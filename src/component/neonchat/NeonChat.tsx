@@ -1,40 +1,86 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, FlatListProps, Image,  StyleSheet,  View } from "react-native";
 import { Avatar, Button, Icon, ListItem,Text} from '@rneui/themed';
 import Message from "./Message";
+import { TextInput } from "react-native-gesture-handler";
+import { T_message } from "../../models";
 
 export interface NeonChatType extends FlatList {}
 export interface T_NeonChatProps extends FlatListProps<any> {
     owner:string;
+    backColor:string;
+    addMessage?: (message:T_message)=>void|null;
 }
 
-export type T_mtype = "text" | "image" | "file"
-
-export type T_message = {
-    text:string
-    type?:T_mtype; 
-    userId?:string;
-    creatDate?:string;
-    isSame?:boolean | true;
+const Bottom = () =>{
+  const [value,setValue] = useState<string>("");
+  return(
+    <View style={{flexDirection:"row",paddingRight:5}}>
+      <TextInput
+      value={value}
+      onChangeText={(e:string)=>{
+          setValue(e);
+      }}
+      numberOfLines={3}
+       style={{flex:1,fontSize:12,margin:5,borderWidth:1,borderRadius:5}}/>
+      <Button title="보내기"
+       onPress={()=>{
+         onSend(value);
+       }}
+      />
+    </View>
+  )
 }
 
+const onSend = (item:string) =>{
+  console.log(item);
+}
 
 const NeonChat = React.forwardRef<NeonChatType, T_NeonChatProps>((props, ref) => {
-    const owner = props.owner;
-
+ 
+  const [value,setValue] = useState<string>("");
+  
+  const owner = props.owner;
+  
+    console.log("chatCom")
+    console.log(props)
+  //  const addMessage = props.addMessage;
     useEffect(()=>{
         ref.current.scrollToEnd();
     },[props.data]
     )
     return(
+       <View style={{flex:1,flexDirection:'column'}}>
         <FlatList
           {...props}
           ref={ref}
+          style={{backgroundColor:props.backColor,marginVertical:5}}
           renderItem={(item)=>{
                 return renderItem(item);
           }}
           inverted={false}
+          
         />
+      <View style={{flexDirection:"row",paddingRight:5,alignItems:'center'}}>
+      <Icon name="pluscircleo" type="antdesign" size={30} ></Icon>
+      <TextInput
+      value={value}
+      onChangeText={(e:string)=>{
+          setValue(e);
+      }}
+      multiline={true}
+      numberOfLines={1}
+       style={{flex:1,margin:5,borderWidth:1,borderRadius:5,backgroundColor:'#ffffff',color:'#000000'}}/>
+      <Button title="보내기"
+       onPress={()=>{
+         const message1 :T_message = {text:value,isSame:false,displayName:"윤댕"}
+         console.log("send1")
+         props.addMessage && props.addMessage(message1)
+         setValue("");
+       }}
+      />
+    </View>
+        </View>
     )
 });
 
